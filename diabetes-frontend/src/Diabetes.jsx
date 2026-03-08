@@ -86,70 +86,81 @@ function Diabetes() {
         {/* Result Section */}
 
         {result && (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    className="mt-8 bg-white rounded-2xl p-8 shadow-lg text-center border"
+  >
+    {/* Title */}
+    <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+      Prediction Result
+    </h2>
+
+    {/* Result */}
+    <div className="flex justify-center items-center gap-3 mb-4">
+
+      <span
+        className={`text-4xl font-bold ${
+          result === "Diabetic" ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        {result === "Diabetic" ? "⚠️ Diabetic" : "✅ Non-Diabetic"}
+      </span>
+
+    </div>
+
+    {/* Probability Section */}
+    {probability !== null && (
+      <div className="mt-6">
+
+        {/* Percentage */}
+        <p className="text-gray-600 mb-2 text-lg">
+          Risk Probability:
+          <span className="font-semibold ml-2">
+            {Number(probability).toFixed(2)}%
+          </span>
+        </p>
+
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mt-8 bg-gray-50 rounded-xl p-6 shadow-md text-center"
-          >
+            initial={{ width: 0 }}
+            animate={{ width: `${probability}%` }}
+            transition={{ duration: 1 }}
+            className={`h-4 rounded-full ${
+              probability > 70
+                ? "bg-red-500"
+                : probability > 40
+                ? "bg-yellow-400"
+                : "bg-green-500"
+            }`}
+          />
 
-            <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-              Prediction Result
-            </h2>
+        </div>
 
-            <p
-              className={`text-3xl font-bold ${
-                result === "Diabetic"
-                  ? "text-red-500"
-                  : "text-green-500"
-              }`}
-            >
-              {result}
-            </p>
+        {/* Risk Message */}
+        <p
+          className={`mt-3 text-sm font-medium ${
+            probability > 70
+              ? "text-red-500"
+              : probability > 40
+              ? "text-yellow-500"
+              : "text-green-500"
+          }`}
+        >
+          {probability > 70
+            ? "⚠️ High Risk — Please consult a doctor."
+            : probability > 40
+            ? "⚡ Moderate Risk — Monitor your health."
+            : "✅ Low Risk — Maintain a healthy lifestyle."}
+        </p>
 
-            {probability !== null && (
+      </div>
+    )}
+  </motion.div>
 
-              <div className="mt-6">
-
-                <p className="text-gray-600 mb-2">
-                  Risk Probability:
-                  <span className="font-semibold ml-1">
-                    {probability}%
-                  </span>
-                </p>
-
-                <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${probability}%` }}
-                    transition={{ duration: 0.8 }}
-                    className={`h-4 ${
-                      probability > 70
-                        ? "bg-red-500"
-                        : probability > 40
-                        ? "bg-yellow-400"
-                        : "bg-green-500"
-                    }`}
-                  />
-
-                </div>
-
-                <p className="mt-2 text-sm text-gray-500">
-
-                  {probability > 70
-                    ? "High Risk - Consult a doctor"
-                    : probability > 40
-                    ? "Moderate Risk"
-                    : "Low Risk"}
-
-                </p>
-
-              </div>
-
-            )}
-
-          </motion.div>
         )}
 
       </motion.div>
